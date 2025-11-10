@@ -625,18 +625,20 @@ rm gcm-linux_amd64.2.6.1.deb
 ```
 
 ## 👥 Maintainers
-- []
+
+- empty
 
 ## 💬 Support
 
 For support, please open a [GitHub issue](https://github.com/viktorgusev1984/review-kit/issues/new). We welcome bug reports, feature requests, and questions about using Review-Driven Development.
 
 ## 🙏 Acknowledgements
-- []
+
+- empty
 
 ## 📄 License
 his project is licensed under the terms of the MIT open source license. Please refer to the [LICENSE](./LICENSE) file for the full terms.
 
 ## Original base code and ideas
 
-https://github.com/github/speckit
+[https://github.com/github/speckit](https://github.com/github/speckit)
