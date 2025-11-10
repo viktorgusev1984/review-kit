@@ -131,8 +131,6 @@ For detailed step-by-step instructions, see our [comprehensive guide](./review-d
 
 Want to see Review Kit in action? Watch our [video overview](https://www.youtube.com/watch?v=a9eR1xsfvHg&pp=0gcJCckJAYcqIYzv)!
 
-
-
 ## 🤖 Supported AI Agents
 
 | Agent                                                     | Support | Notes                                             |
@@ -353,8 +351,6 @@ review init . --force
 # or
 review init --here --force
 ```
-
-
 
 You will be prompted to select the AI agent you are using. You can also proactively review it directly in the terminal:
 
@@ -629,14 +625,14 @@ rm gcm-linux_amd64.2.6.1.deb
 ```
 
 ## 👥 Maintainers
-
+- []
 
 ## 💬 Support
 
 For support, please open a [GitHub issue](https://github.com/viktorgusev1984/review-kit/issues/new). We welcome bug reports, feature requests, and questions about using Review-Driven Development.
 
 ## 🙏 Acknowledgements
-
+- []
 
 ## 📄 License
 his project is licensed under the terms of the MIT open source license. Please refer to the [LICENSE](./LICENSE) file for the full terms.
