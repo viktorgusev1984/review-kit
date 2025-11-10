@@ -252,6 +252,7 @@ Additional commands for enhanced quality and validation:
 | Variable         | Description                                                                                    |
 |------------------|------------------------------------------------------------------------------------------------|
 | `SPECIFY_FEATURE` | Override feature detection for non-Git repositories. Set to the feature directory name (e.g., `001-photo-albums`) to work on a specific feature when not using Git branches.<br/>**Must be set in the context of the agent you're working with prior to using `/reviewkit.plan` or follow-up commands. |
+| `SPECIFY_COMPARE_BRANCHES` | Optional space- or comma-separated list of branches that new features should be compared against (e.g., `main develop`). Defaults to `main` when unset. Recorded in `.specify/branch-comparisons.json` each time `/reviewkit.specify` runs. |
 
 ## 📚 Core Philosophy
 
@@ -412,7 +413,7 @@ delete any comments that you made, but you can't delete comments anybody else ma
 
 After this prompt is entered, you should see Claude Code kick off the planning and spec drafting process. Claude Code will also trigger some of the built-in scripts to set up the repository.
 
-Once this step is completed, you should have a new branch created (e.g., `001-create-taskify`), as well as a new specification in the `specs/001-create-taskify` directory.
+Once this step is completed, you'll receive the proposed branch name (e.g., `001-create-taskify`) and a new specification in the `specs/001-create-taskify` directory. Create and checkout the branch manually when you're ready—automatic branch creation is disabled. The branch name and its comparison targets are recorded in `.specify/branch-comparisons.json`.
 
 The produced specification should contain a set of user stories and functional requirements, as defined in the template.
 

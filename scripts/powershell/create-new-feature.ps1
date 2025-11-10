@@ -249,13 +249,10 @@ if ($branchName.Length -gt $maxBranchLength) {
 }
 
 if ($hasGit) {
-    try {
-        git checkout -b $branchName | Out-Null
-    } catch {
-        Write-Warning "Failed to create git branch: $branchName"
-    }
+    Write-Warning "[specify] Automatic git branch creation is disabled."
+    Write-Warning "[specify] Create the branch manually when ready: git checkout -b $branchName"
 } else {
-    Write-Warning "[specify] Warning: Git repository not detected; skipped branch creation for $branchName"
+    Write-Warning "[specify] Warning: Git repository not detected; branch creation skipped for $branchName"
 }
 
 $featureDir = Join-Path $specsDir $branchName
@@ -263,21 +260,66 @@ New-Item -ItemType Directory -Path $featureDir -Force | Out-Null
 
 $template = Join-Path $repoRoot '.specify/templates/spec-template.md'
 $specFile = Join-Path $featureDir 'spec.md'
-if (Test-Path $template) { 
-    Copy-Item $template $specFile -Force 
-} else { 
-    New-Item -ItemType File -Path $specFile | Out-Null 
+if (Test-Path $template) {
+    Copy-Item $template $specFile -Force
+} else {
+    New-Item -ItemType File -Path $specFile | Out-Null
 }
+
+# Determine which branches should be compared for this feature
+$compareInput = if ($env:SPECIFY_COMPARE_BRANCHES) { $env:SPECIFY_COMPARE_BRANCHES } else { 'main' }
+$compareInput = $compareInput -replace ',', ' '
+$compareTargets = @()
+foreach ($item in ($compareInput -split '\s+')) {
+    $trimmed = $item.Trim()
+    if ($trimmed) { $compareTargets += $trimmed }
+}
+if ($compareTargets.Count -eq 0) {
+    $compareTargets = @('main')
+}
+
+$compareDir = Join-Path $repoRoot '.specify'
+New-Item -ItemType Directory -Path $compareDir -Force | Out-Null
+$compareDbPath = Join-Path $compareDir 'branch-comparisons.json'
+
+if (Test-Path $compareDbPath) {
+    try {
+        $rawDb = Get-Content $compareDbPath -Raw
+        if ([string]::IsNullOrWhiteSpace($rawDb)) {
+            $branchDb = [ordered]@{}
+        } else {
+            $parsedDb = $rawDb | ConvertFrom-Json -ErrorAction Stop
+            if ($parsedDb -is [System.Collections.IDictionary]) {
+                $branchDb = [ordered]@{}
+                foreach ($key in $parsedDb.Keys) {
+                    $branchDb[$key] = $parsedDb[$key]
+                }
+            } else {
+                $branchDb = [ordered]@{}
+                $parsedDb.PSObject.Properties | ForEach-Object { $branchDb[$_.Name] = $_.Value }
+            }
+        }
+    } catch {
+        Write-Warning "[specify] Warning: Unable to read existing branch comparison registry. Resetting file."
+        $branchDb = [ordered]@{}
+    }
+} else {
+    $branchDb = [ordered]@{}
+}
+
+$branchDb[$branchName] = [ordered]@{ compare_to = $compareTargets }
+($branchDb | ConvertTo-Json -Depth 5) | Set-Content -Path $compareDbPath -Encoding UTF8
 
 # Set the SPECIFY_FEATURE environment variable for the current session
 $env:SPECIFY_FEATURE = $branchName
 
 if ($Json) {
-    $obj = [PSCustomObject]@{ 
+    $obj = [PSCustomObject]@{
         BRANCH_NAME = $branchName
         SPEC_FILE = $specFile
         FEATURE_NUM = $featureNum
         HAS_GIT = $hasGit
+        COMPARE_BRANCHES = $compareTargets
     }
     $obj | ConvertTo-Json -Compress
 } else {
@@ -285,6 +327,7 @@ if ($Json) {
     Write-Output "SPEC_FILE: $specFile"
     Write-Output "FEATURE_NUM: $featureNum"
     Write-Output "HAS_GIT: $hasGit"
+    Write-Output "COMPARE_BRANCHES: $($compareTargets -join ', ')"
     Write-Output "SPECIFY_FEATURE environment variable set to: $branchName"
 }
 

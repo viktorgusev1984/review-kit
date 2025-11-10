@@ -235,9 +235,10 @@ if [ ${#BRANCH_NAME} -gt $MAX_BRANCH_LENGTH ]; then
 fi
 
 if [ "$HAS_GIT" = true ]; then
-    git checkout -b "$BRANCH_NAME"
+    >&2 echo "[specify] Automatic git branch creation is disabled."
+    >&2 echo "[specify] Create the branch manually when ready: git checkout -b \"$BRANCH_NAME\""
 else
-    >&2 echo "[specify] Warning: Git repository not detected; skipped branch creation for $BRANCH_NAME"
+    >&2 echo "[specify] Warning: Git repository not detected; branch creation skipped for $BRANCH_NAME"
 fi
 
 FEATURE_DIR="$SPECS_DIR/$BRANCH_NAME"
@@ -247,14 +248,72 @@ TEMPLATE="$REPO_ROOT/.specify/templates/spec-template.md"
 SPEC_FILE="$FEATURE_DIR/spec.md"
 if [ -f "$TEMPLATE" ]; then cp "$TEMPLATE" "$SPEC_FILE"; else touch "$SPEC_FILE"; fi
 
+# Determine which branches should be compared for this feature
+COMPARE_INPUT="${SPECIFY_COMPARE_BRANCHES:-main}"
+COMPARE_INPUT=${COMPARE_INPUT//,/ }
+COMPARE_BRANCHES=()
+for entry in $COMPARE_INPUT; do
+    trimmed=$(echo "$entry" | sed 's/^ *//;s/ *$//')
+    if [ -n "$trimmed" ]; then
+        COMPARE_BRANCHES+=("$trimmed")
+    fi
+done
+if [ ${#COMPARE_BRANCHES[@]} -eq 0 ]; then
+    COMPARE_BRANCHES=("main")
+fi
+
+COMPARE_DB_DIR="$REPO_ROOT/.specify"
+COMPARE_DB_FILE="$COMPARE_DB_DIR/branch-comparisons.json"
+mkdir -p "$COMPARE_DB_DIR"
+
+if command -v python3 >/dev/null 2>&1; then
+    python3 - "$COMPARE_DB_FILE" "$BRANCH_NAME" "${COMPARE_BRANCHES[@]}" <<'PY'
+import json
+import os
+import sys
+
+db_path = sys.argv[1]
+branch = sys.argv[2]
+targets = sys.argv[3:]
+
+data = {}
+if os.path.exists(db_path):
+    try:
+        with open(db_path, 'r', encoding='utf-8') as fh:
+            existing = fh.read().strip()
+            if existing:
+                data = json.loads(existing)
+    except json.JSONDecodeError:
+        # Fall back to empty structure on malformed JSON
+        data = {}
+
+data[branch] = {"compare_to": targets}
+
+with open(db_path, 'w', encoding='utf-8') as fh:
+    json.dump(data, fh, indent=2)
+    fh.write('\n')
+PY
+else
+    >&2 echo "[specify] Warning: python3 not found; skipping branch comparison registry update"
+fi
+
+COMPARE_BRANCHES_JSON="["
+if [ ${#COMPARE_BRANCHES[@]} -gt 0 ]; then
+    COMPARE_BRANCHES_JSON+=$(printf '"%s",' "${COMPARE_BRANCHES[@]}")
+    COMPARE_BRANCHES_JSON="${COMPARE_BRANCHES_JSON%,}"
+fi
+COMPARE_BRANCHES_JSON+="]"
+COMPARE_BRANCHES_TEXT=$(IFS=', '; printf '%s' "${COMPARE_BRANCHES[*]}")
+
 # Set the SPECIFY_FEATURE environment variable for the current session
 export SPECIFY_FEATURE="$BRANCH_NAME"
 
 if $JSON_MODE; then
-    printf '{"BRANCH_NAME":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s"}\n' "$BRANCH_NAME" "$SPEC_FILE" "$FEATURE_NUM"
+    printf '{"BRANCH_NAME":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s","COMPARE_BRANCHES":%s}\n' "$BRANCH_NAME" "$SPEC_FILE" "$FEATURE_NUM" "$COMPARE_BRANCHES_JSON"
 else
     echo "BRANCH_NAME: $BRANCH_NAME"
     echo "SPEC_FILE: $SPEC_FILE"
     echo "FEATURE_NUM: $FEATURE_NUM"
+    echo "COMPARE_BRANCHES: $COMPARE_BRANCHES_TEXT"
     echo "SPECIFY_FEATURE environment variable set to: $BRANCH_NAME"
 fi
