@@ -427,9 +427,7 @@ see yours. You can edit any comments that you make, but you can't edit comments 
 delete any comments that you made, but you can't delete comments anybody else made.
 ```
 
-After this prompt is entered, you should see Claude Code kick off the planning and spec drafting process. Claude Code will also trigger some of the built-in scripts to set up the repository.
-
-Once this step is completed, you'll receive the proposed branch name (e.g., `001-create-taskify`) and a new specification in the `specs/001-create-taskify` directory. Create and checkout the branch manually when you're ready—automatic branch creation is disabled. The branch name and its comparison targets are recorded in `.review/branch-comparisons.json`.
+After this prompt is entered, you should see Claude Code kick off the planning and spec drafting process. Claude Code prepares a documentation workspace in the `specs/<feature-slug>` directory based on the feature description.
 
 The produced specification should contain a set of user stories and functional requirements, as defined in the template.
 
@@ -442,7 +440,6 @@ At this stage, your project folder contents should resemble the following:
     ├── scripts
     │  ├── check-prerequisites.sh
     │  ├── common.sh
-    │  ├── create-new-feature.sh
     │  ├── setup-plan.sh
     │  └── update-claude-md.sh
     ├── specs
@@ -503,7 +500,6 @@ The output of this step will include a number of implementation detail documents
 ├── scripts
 │  ├── check-prerequisites.sh
 │  ├── common.sh
-│  ├── create-new-feature.sh
 │  ├── setup-plan.sh
 │  └── update-claude-md.sh
 ├── specs
