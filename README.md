@@ -1,6 +1,6 @@
 <div align="center">
     <img src="./media/logo_small.webp" alt="Review Kit Logo"/>
-    <h1>🌱 Review Kit</h1>
+    <h1>🔍 Review Kit</h1>
     <h3><em>Build high-quality software faster.</em></h3>
 </div>
 
@@ -131,7 +131,7 @@ For detailed step-by-step instructions, see our [comprehensive guide](./review-d
 
 Want to see Review Kit in action? Watch our [video overview](https://www.youtube.com/watch?v=a9eR1xsfvHg&pp=0gcJCckJAYcqIYzv)!
 
-[![Review Kit video header](/media/spec-kit-video-header.jpg)](https://www.youtube.com/watch?v=a9eR1xsfvHg&pp=0gcJCckJAYcqIYzv)
+
 
 ## 🤖 Supported AI Agents
 
@@ -354,7 +354,7 @@ review init . --force
 review init --here --force
 ```
 
-![Review CLI bootstrapping a new project in the terminal](./media/specify_cli.gif)
+
 
 You will be prompted to select the AI agent you are using. You can also proactively review it directly in the terminal:
 
@@ -388,7 +388,6 @@ review init <project_name> --ai claude --ignore-agent-tools
 
 Go to the project folder and run your AI agent. In our example, we're using `claude`.
 
-![Bootstrapping Claude Code environment](./media/bootstrap-claude-code.gif)
 
 You will know that things are configured correctly if you see the `/reviewkit.constitution`, `/reviewkit.review`, `/reviewkit.plan`, `/reviewkit.tasks`, and `/reviewkit.implement` commands available.
 
@@ -635,8 +634,6 @@ rm gcm-linux_amd64.2.6.1.deb
 
 ## 👥 Maintainers
 
-- Den Delimarsky ([@localden](https://github.com/localden))
-- John Lam ([@jflam](https://github.com/jflam))
 
 ## 💬 Support
 
@@ -644,8 +641,10 @@ For support, please open a [GitHub issue](https://github.com/viktorgusev1984/rev
 
 ## 🙏 Acknowledgements
 
-This project is heavily influenced by and based on the work and research of [John Lam](https://github.com/jflam).
 
 ## 📄 License
+his project is licensed under the terms of the MIT open source license. Please refer to the [LICENSE](./LICENSE) file for the full terms.
 
-This project is licensed under the terms of the MIT open source license. Please refer to the [LICENSE](./LICENSE) file for the full terms.
+## Original base code and ideas
+
+https://github.com/github/speckit
