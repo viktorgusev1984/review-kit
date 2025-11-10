@@ -69,20 +69,20 @@ To test your templates, commands, and other changes locally, follow these steps:
 
 1. **Create release packages**
 
-    Run the following command to generate the local packages:
-    ```bash
-    ./.github/workflows/scripts/create-release-packages.sh v1.0.0
-    ```
+Run the following command to generate the local packages:
+```bash
+./.github/workflows/scripts/create-release-packages.sh v1.0.0
+```
 
 2. **Copy the relevant package to your test project**
 
-    ```bash
-    cp -r .genreleases/sdd-copilot-package-sh/. <path-to-test-project>/
-    ```
+```bash
+cp -r .genreleases/sdd-copilot-package-sh/. <path-to-test-project>/
+```
 
 3. **Open and test the agent**
 
-    Navigate to your test project folder and open the agent to verify your implementation.
+Navigate to your test project folder and open the agent to verify your implementation.
 
 ## AI contributions in Review Kit
 
