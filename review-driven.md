@@ -74,7 +74,7 @@ The key is treating specifications as the source of truth, with code as the gene
 
 The RDD methodology is significantly enhanced through three powerful commands that automate the specification → planning → tasking workflow:
 
-### The `/reviewkit.specify` Command
+### The `/reviewkit.review` Command
 
 This command transforms a simple feature description (the user-prompt) into a complete, structured specification with automatic repository management:
 
@@ -121,7 +121,7 @@ Total: ~12 hours of documentation work
 
 ```bash
 # Step 1: Create the feature specification (5 minutes)
-/reviewkit.specify Real-time chat system with message history and user presence
+/reviewkit.review Real-time chat system with message history and user presence
 
 # This automatically:
 # - Creates branch "003-chat-system"
@@ -184,7 +184,7 @@ Both templates mandate the use of `[NEEDS CLARIFICATION]` markers:
 ```text
 When creating this spec from a user prompt:
 1. **Mark all ambiguities**: Use [NEEDS CLARIFICATION: specific question]
-2. **Don't guess**: If the prompt doesn't specify something, mark it
+2. **Don't guess**: If the prompt doesn't review something, mark it
 ```
 
 This prevents the common LLM behavior of making plausible but potentially incorrect assumptions. Instead of guessing that a "login system" uses email/password authentication, the LLM must mark it as `[NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]`.
@@ -279,7 +279,7 @@ The constitution defines nine articles that shape every aspect of the developmen
 Every feature must begin as a standalone library—no exceptions. This forces modular design from the start:
 
 ```text
-Every feature in Specify MUST begin its existence as a standalone library.
+Every feature in Review MUST begin its existence as a standalone library.
 No feature shall be implemented directly within application code without
 first being abstracted into a reusable library component.
 ```

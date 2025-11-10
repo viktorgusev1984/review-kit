@@ -1,7 +1,7 @@
 [project]
-name = "specify-cli"
-version = "0.0.23"
-description = "Specify CLI, part of GitHub Review Kit. A tool to bootstrap your projects for Review-Driven Development (RDD)."
+name = "review-cli"
+version = "0.0.24"
+description = "Review CLI, part of GitHub Review Kit. A tool to bootstrap your projects for Review-Driven Development (RDD)."
 requires-python = ">=3.11"
 dependencies = [
     "typer",
@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [project.scripts]
-specify = "specify_cli:main"
+review = "specify_cli:main"
 
 [build-system]
 requires = ["hatchling"]

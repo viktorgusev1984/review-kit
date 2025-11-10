@@ -18,7 +18,7 @@ if ($Help) {
     Write-Host "Options:"
     Write-Host "  -Json               Output in JSON format"
     Write-Host "  -ShortName <name>   Provide a custom short name (2-4 words) for the branch"
-    Write-Host "  -Number N           Specify branch number manually (overrides auto-detection)"
+    Write-Host "  -Number N           Set branch number manually (overrides auto-detection)"
     Write-Host "  -Help               Show this help message"
     Write-Host ""
     Write-Host "Examples:"
@@ -41,7 +41,7 @@ $featureDesc = ($FeatureDescription -join ' ').Trim()
 function Find-RepositoryRoot {
     param(
         [string]$StartDir,
-        [string[]]$Markers = @('.git', '.specify')
+        [string[]]$Markers = @('.git', '.review')
     )
     $current = Resolve-Path $StartDir
     while ($true) {
@@ -243,22 +243,22 @@ if ($branchName.Length -gt $maxBranchLength) {
     $originalBranchName = $branchName
     $branchName = "$featureNum-$truncatedSuffix"
     
-    Write-Warning "[specify] Branch name exceeded GitHub's 244-byte limit"
-    Write-Warning "[specify] Original: $originalBranchName ($($originalBranchName.Length) bytes)"
-    Write-Warning "[specify] Truncated to: $branchName ($($branchName.Length) bytes)"
+    Write-Warning "[review] Branch name exceeded GitHub's 244-byte limit"
+    Write-Warning "[review] Original: $originalBranchName ($($originalBranchName.Length) bytes)"
+    Write-Warning "[review] Truncated to: $branchName ($($branchName.Length) bytes)"
 }
 
 if ($hasGit) {
-    Write-Warning "[specify] Automatic git branch creation is disabled."
-    Write-Warning "[specify] Create the branch manually when ready: git checkout -b $branchName"
+    Write-Warning "[review] Automatic git branch creation is disabled."
+    Write-Warning "[review] Create the branch manually when ready: git checkout -b $branchName"
 } else {
-    Write-Warning "[specify] Warning: Git repository not detected; branch creation skipped for $branchName"
+    Write-Warning "[review] Warning: Git repository not detected; branch creation skipped for $branchName"
 }
 
 $featureDir = Join-Path $specsDir $branchName
 New-Item -ItemType Directory -Path $featureDir -Force | Out-Null
 
-$template = Join-Path $repoRoot '.specify/templates/spec-template.md'
+$template = Join-Path $repoRoot '.review/templates/spec-template.md'
 $specFile = Join-Path $featureDir 'spec.md'
 if (Test-Path $template) {
     Copy-Item $template $specFile -Force
@@ -267,7 +267,7 @@ if (Test-Path $template) {
 }
 
 # Determine which branches should be compared for this feature
-$compareInput = if ($env:SPECIFY_COMPARE_BRANCHES) { $env:SPECIFY_COMPARE_BRANCHES } else { 'main' }
+$compareInput = if ($env:REVIEW_COMPARE_BRANCHES) { $env:REVIEW_COMPARE_BRANCHES } else { 'main' }
 $compareInput = $compareInput -replace ',', ' '
 $compareTargets = @()
 foreach ($item in ($compareInput -split '\s+')) {
@@ -278,7 +278,7 @@ if ($compareTargets.Count -eq 0) {
     $compareTargets = @('main')
 }
 
-$compareDir = Join-Path $repoRoot '.specify'
+$compareDir = Join-Path $repoRoot '.review'
 New-Item -ItemType Directory -Path $compareDir -Force | Out-Null
 $compareDbPath = Join-Path $compareDir 'branch-comparisons.json'
 
@@ -300,7 +300,7 @@ if (Test-Path $compareDbPath) {
             }
         }
     } catch {
-        Write-Warning "[specify] Warning: Unable to read existing branch comparison registry. Resetting file."
+        Write-Warning "[review] Warning: Unable to read existing branch comparison registry. Resetting file."
         $branchDb = [ordered]@{}
     }
 } else {
@@ -310,8 +310,8 @@ if (Test-Path $compareDbPath) {
 $branchDb[$branchName] = [ordered]@{ compare_to = $compareTargets }
 ($branchDb | ConvertTo-Json -Depth 5) | Set-Content -Path $compareDbPath -Encoding UTF8
 
-# Set the SPECIFY_FEATURE environment variable for the current session
-$env:SPECIFY_FEATURE = $branchName
+# Set the REVIEW_FEATURE environment variable for the current session
+$env:REVIEW_FEATURE = $branchName
 
 if ($Json) {
     $obj = [PSCustomObject]@{
@@ -328,6 +328,6 @@ if ($Json) {
     Write-Output "FEATURE_NUM: $featureNum"
     Write-Output "HAS_GIT: $hasGit"
     Write-Output "COMPARE_BRANCHES: $($compareTargets -join ', ')"
-    Write-Output "SPECIFY_FEATURE environment variable set to: $branchName"
+    Write-Output "REVIEW_FEATURE environment variable set to: $branchName"
 }
 

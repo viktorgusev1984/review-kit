@@ -1,14 +1,14 @@
 {
     "chat.promptFilesRecommendations": {
         "reviewkit.constitution": true,
-        "reviewkit.specify": true,
+        "reviewkit.review": true,
         "reviewkit.plan": true,
         "reviewkit.tasks": true,
         "reviewkit.implement": true
     },
     "chat.tools.terminal.autoApprove": {
-        ".specify/scripts/bash/": true,
-        ".specify/scripts/powershell/": true
+        ".review/scripts/bash/": true,
+        ".review/scripts/powershell/": true
     }
 }
 

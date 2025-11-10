@@ -102,7 +102,7 @@ fi
 # Validate required directories and files
 if [[ ! -d "$FEATURE_DIR" ]]; then
     echo "ERROR: Feature directory not found: $FEATURE_DIR" >&2
-    echo "Run /reviewkit.specify first to create the feature structure." >&2
+    echo "Run /reviewkit.review first to create the feature structure." >&2
     exit 1
 fi
 

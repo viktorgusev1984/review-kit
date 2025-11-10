@@ -46,7 +46,7 @@ while [ $i -le $# ]; do
             echo "Options:"
             echo "  --json              Output in JSON format"
             echo "  --short-name <name> Provide a custom short name (2-4 words) for the branch"
-            echo "  --number N          Specify branch number manually (overrides auto-detection)"
+            echo "  --number N          Set branch number manually (overrides auto-detection)"
             echo "  --help, -h          Show this help message"
             echo ""
             echo "Examples:"
@@ -71,7 +71,7 @@ fi
 find_repo_root() {
     local dir="$1"
     while [ "$dir" != "/" ]; do
-        if [ -d "$dir/.git" ] || [ -d "$dir/.specify" ]; then
+        if [ -d "$dir/.git" ] || [ -d "$dir/.review" ]; then
             echo "$dir"
             return 0
         fi
@@ -229,27 +229,27 @@ if [ ${#BRANCH_NAME} -gt $MAX_BRANCH_LENGTH ]; then
     ORIGINAL_BRANCH_NAME="$BRANCH_NAME"
     BRANCH_NAME="${FEATURE_NUM}-${TRUNCATED_SUFFIX}"
     
-    >&2 echo "[specify] Warning: Branch name exceeded GitHub's 244-byte limit"
-    >&2 echo "[specify] Original: $ORIGINAL_BRANCH_NAME (${#ORIGINAL_BRANCH_NAME} bytes)"
-    >&2 echo "[specify] Truncated to: $BRANCH_NAME (${#BRANCH_NAME} bytes)"
+    >&2 echo "[review] Warning: Branch name exceeded GitHub's 244-byte limit"
+    >&2 echo "[review] Original: $ORIGINAL_BRANCH_NAME (${#ORIGINAL_BRANCH_NAME} bytes)"
+    >&2 echo "[review] Truncated to: $BRANCH_NAME (${#BRANCH_NAME} bytes)"
 fi
 
 if [ "$HAS_GIT" = true ]; then
-    >&2 echo "[specify] Automatic git branch creation is disabled."
-    >&2 echo "[specify] Create the branch manually when ready: git checkout -b \"$BRANCH_NAME\""
+    >&2 echo "[review] Automatic git branch creation is disabled."
+    >&2 echo "[review] Create the branch manually when ready: git checkout -b \"$BRANCH_NAME\""
 else
-    >&2 echo "[specify] Warning: Git repository not detected; branch creation skipped for $BRANCH_NAME"
+    >&2 echo "[review] Warning: Git repository not detected; branch creation skipped for $BRANCH_NAME"
 fi
 
 FEATURE_DIR="$SPECS_DIR/$BRANCH_NAME"
 mkdir -p "$FEATURE_DIR"
 
-TEMPLATE="$REPO_ROOT/.specify/templates/spec-template.md"
+TEMPLATE="$REPO_ROOT/.review/templates/spec-template.md"
 SPEC_FILE="$FEATURE_DIR/spec.md"
 if [ -f "$TEMPLATE" ]; then cp "$TEMPLATE" "$SPEC_FILE"; else touch "$SPEC_FILE"; fi
 
 # Determine which branches should be compared for this feature
-COMPARE_INPUT="${SPECIFY_COMPARE_BRANCHES:-main}"
+COMPARE_INPUT="${REVIEW_COMPARE_BRANCHES:-main}"
 COMPARE_INPUT=${COMPARE_INPUT//,/ }
 COMPARE_BRANCHES=()
 for entry in $COMPARE_INPUT; do
@@ -262,7 +262,7 @@ if [ ${#COMPARE_BRANCHES[@]} -eq 0 ]; then
     COMPARE_BRANCHES=("main")
 fi
 
-COMPARE_DB_DIR="$REPO_ROOT/.specify"
+COMPARE_DB_DIR="$REPO_ROOT/.review"
 COMPARE_DB_FILE="$COMPARE_DB_DIR/branch-comparisons.json"
 mkdir -p "$COMPARE_DB_DIR"
 
@@ -294,7 +294,7 @@ with open(db_path, 'w', encoding='utf-8') as fh:
     fh.write('\n')
 PY
 else
-    >&2 echo "[specify] Warning: python3 not found; skipping branch comparison registry update"
+    >&2 echo "[review] Warning: python3 not found; skipping branch comparison registry update"
 fi
 
 COMPARE_BRANCHES_JSON="["
@@ -305,8 +305,8 @@ fi
 COMPARE_BRANCHES_JSON+="]"
 COMPARE_BRANCHES_TEXT=$(IFS=', '; printf '%s' "${COMPARE_BRANCHES[*]}")
 
-# Set the SPECIFY_FEATURE environment variable for the current session
-export SPECIFY_FEATURE="$BRANCH_NAME"
+# Set the REVIEW_FEATURE environment variable for the current session
+export REVIEW_FEATURE="$BRANCH_NAME"
 
 if $JSON_MODE; then
     printf '{"BRANCH_NAME":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s","COMPARE_BRANCHES":%s}\n' "$BRANCH_NAME" "$SPEC_FILE" "$FEATURE_NUM" "$COMPARE_BRANCHES_JSON"
@@ -315,5 +315,5 @@ else
     echo "SPEC_FILE: $SPEC_FILE"
     echo "FEATURE_NUM: $FEATURE_NUM"
     echo "COMPARE_BRANCHES: $COMPARE_BRANCHES_TEXT"
-    echo "SPECIFY_FEATURE environment variable set to: $BRANCH_NAME"
+    echo "REVIEW_FEATURE environment variable set to: $BRANCH_NAME"
 fi
