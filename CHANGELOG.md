@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Rebranded the toolkit from Spec Kit to Review Kit across CLI help text, templates, and documentation.
+- Rebranded the toolkit from Review Kit to Review Kit across CLI help text, templates, and documentation.
 - Updated command prefixes from `/reviewkit.*` to `/reviewkit.*` in all generated assets and supporting scripts.
 - Refreshed project links, release artifacts, and repository references to point to the new `github/review-kit` location.
 
