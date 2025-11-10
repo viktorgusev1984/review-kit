@@ -52,14 +52,21 @@ Given that feature description, do this:
       - Pass `--number N+1` and `--short-name "your-short-name"` along with the feature description
       - Bash example: `{SCRIPT} --json --number 5 --short-name "user-auth" "Add user authentication"`
       - PowerShell example: `{SCRIPT} -Json -Number 5 -ShortName "user-auth" "Add user authentication"`
-   
+
+   e. After the script finishes, manually create and checkout the branch when ready:
+      ```bash
+      git checkout -b "<BRANCH_NAME_FROM_JSON>"
+      ```
+      - Automatic branch creation is intentionally disabled. Confirm with the user before making git changes.
+
    **IMPORTANT**:
    - Check all three sources (remote branches, local branches, specs directories) to find the highest number
    - Only match branches/directories with the exact short-name pattern
    - If no existing branches/directories found with this short-name, start with number 1
    - You must only ever run this script once per feature
    - The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for
-   - The JSON output will contain BRANCH_NAME and SPEC_FILE paths
+   - The JSON output will contain `BRANCH_NAME`, `SPEC_FILE`, `FEATURE_NUM`, and a `COMPARE_BRANCHES` array listing the branches that should be diffed against this feature (default: `main`).
+   - The script also records branch comparison metadata in `.specify/branch-comparisons.json`. Set `SPECIFY_COMPARE_BRANCHES="main develop"` (space- or comma-separated) before running the command to customize the targets.
    - For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot")
 
 3. Load `templates/spec-template.md` to understand required sections.
@@ -186,7 +193,7 @@ Given that feature description, do this:
 
 7. Report completion with branch name, spec file path, checklist results, and readiness for the next phase (`/reviewkit.clarify` or `/reviewkit.plan`).
 
-**NOTE:** The script creates and checks out the new branch and initializes the spec file before writing.
+**NOTE:** The script initializes the spec file and updates the branch comparison registry, but it does **not** create or checkout a git branch automatically.
 
 ## General Guidelines
 
