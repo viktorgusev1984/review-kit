@@ -131,8 +131,6 @@ For detailed step-by-step instructions, see our [comprehensive guide](./review-d
 
 Want to see Review Kit in action? Watch our [video overview](https://www.youtube.com/watch?v=a9eR1xsfvHg&pp=0gcJCckJAYcqIYzv)!
 
-
-
 ## 🤖 Supported AI Agents
 
 | Agent                                                     | Support | Notes                                             |
@@ -354,8 +352,6 @@ review init . --force
 review init --here --force
 ```
 
-
-
 You will be prompted to select the AI agent you are using. You can also proactively review it directly in the terminal:
 
 ```bash
@@ -387,7 +383,6 @@ review init <project_name> --ai claude --ignore-agent-tools
 ### **STEP 1:** Establish project principles
 
 Go to the project folder and run your AI agent. In our example, we're using `claude`.
-
 
 You will know that things are configured correctly if you see the `/reviewkit.constitution`, `/reviewkit.review`, `/reviewkit.plan`, `/reviewkit.tasks`, and `/reviewkit.implement` commands available.
 
@@ -427,9 +422,7 @@ see yours. You can edit any comments that you make, but you can't edit comments 
 delete any comments that you made, but you can't delete comments anybody else made.
 ```
 
-After this prompt is entered, you should see Claude Code kick off the planning and spec drafting process. Claude Code will also trigger some of the built-in scripts to set up the repository.
-
-Once this step is completed, you'll receive the proposed branch name (e.g., `001-create-taskify`) and a new specification in the `specs/001-create-taskify` directory. Create and checkout the branch manually when you're ready—automatic branch creation is disabled. The branch name and its comparison targets are recorded in `.review/branch-comparisons.json`.
+After this prompt is entered, you should see Claude Code kick off the planning and spec drafting process. Claude Code prepares a documentation workspace in the `specs/<feature-slug>` directory based on the feature description.
 
 The produced specification should contain a set of user stories and functional requirements, as defined in the template.
 
@@ -442,7 +435,6 @@ At this stage, your project folder contents should resemble the following:
     ├── scripts
     │  ├── check-prerequisites.sh
     │  ├── common.sh
-    │  ├── create-new-feature.sh
     │  ├── setup-plan.sh
     │  └── update-claude-md.sh
     ├── specs
@@ -503,7 +495,6 @@ The output of this step will include a number of implementation detail documents
 ├── scripts
 │  ├── check-prerequisites.sh
 │  ├── common.sh
-│  ├── create-new-feature.sh
 │  ├── setup-plan.sh
 │  └── update-claude-md.sh
 ├── specs
@@ -634,6 +625,7 @@ rm gcm-linux_amd64.2.6.1.deb
 
 ## 👥 Maintainers
 
+- empty
 
 ## 💬 Support
 
@@ -641,10 +633,12 @@ For support, please open a [GitHub issue](https://github.com/viktorgusev1984/rev
 
 ## 🙏 Acknowledgements
 
+- empty
 
 ## 📄 License
+
 his project is licensed under the terms of the MIT open source license. Please refer to the [LICENSE](./LICENSE) file for the full terms.
 
 ## Original base code and ideas
 
-https://github.com/github/speckit
+[https://github.com/github/speckit](https://github.com/github/speckit)

@@ -1,8 +1,5 @@
 ---
 description: Create or update the feature specification from a natural language feature description.
-scripts:
-  sh: scripts/bash/create-new-feature.sh --json "{ARGS}"
-  ps: scripts/powershell/create-new-feature.ps1 -Json "{ARGS}"
 ---
 
 ## User Input
@@ -19,7 +16,7 @@ The text the user typed after `/reviewkit.review` in the triggering message **is
 
 Given that feature description, do this:
 
-1. **Generate a concise short name** (2-4 words) for the branch:
+1. **Generate a concise feature slug** (2-4 words) for the documentation folder:
    - Analyze the feature description and extract the most meaningful keywords
    - Create a 2-4 word short name that captures the essence of the feature
    - Use action-noun format when possible (e.g., "add-user-auth", "fix-payment-bug")
@@ -31,43 +28,12 @@ Given that feature description, do this:
      - "Create a dashboard for analytics" → "analytics-dashboard"
      - "Fix payment processing timeout bug" → "fix-payment-timeout"
 
-2. **Check for existing branches before creating new one**:
-   
-   a. First, fetch all remote branches to ensure we have the latest information:
-      ```bash
-      git fetch --all --prune
-      ```
-   
-   b. Find the highest feature number across all sources for the short-name:
-      - Remote branches: `git ls-remote --heads origin | grep -E 'refs/heads/[0-9]+-<short-name>$'`
-      - Local branches: `git branch | grep -E '^[* ]*[0-9]+-<short-name>$'`
-      - Specs directories: Check for directories matching `specs/[0-9]+-<short-name>`
-   
-   c. Determine the next available number:
-      - Extract all numbers from all three sources
-      - Find the highest number N
-      - Use N+1 for the new branch number
-   
-   d. Run the script `{SCRIPT}` with the calculated number and short-name:
-      - Pass `--number N+1` and `--short-name "your-short-name"` along with the feature description
-      - Bash example: `{SCRIPT} --json --number 5 --short-name "user-auth" "Add user authentication"`
-      - PowerShell example: `{SCRIPT} -Json -Number 5 -ShortName "user-auth" "Add user authentication"`
-
-   e. After the script finishes, manually create and checkout the branch when ready:
-      ```bash
-      git checkout -b "<BRANCH_NAME_FROM_JSON>"
-      ```
-      - Automatic branch creation is intentionally disabled. Confirm with the user before making git changes.
-
-   **IMPORTANT**:
-   - Check all three sources (remote branches, local branches, specs directories) to find the highest number
-   - Only match branches/directories with the exact short-name pattern
-   - If no existing branches/directories found with this short-name, start with number 1
-   - You must only ever run this script once per feature
-   - The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for
-   - The JSON output will contain `BRANCH_NAME`, `SPEC_FILE`, `FEATURE_NUM`, and a `COMPARE_BRANCHES` array listing the branches that should be diffed against this feature (default: `main`).
-   - The script also records branch comparison metadata in `.review/branch-comparisons.json`. Set `REVIEW_COMPARE_BRANCHES="main develop"` (space- or comma-separated) before running the command to customize the targets.
-   - For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot")
+2. **Prepare the documentation workspace**:
+   - Define `FEATURE_DIR = specs/<feature-slug>`
+   - Define `SPEC_FILE = specs/<feature-slug>/spec.md`
+   - Create the directory if it does not exist
+   - If `SPEC_FILE` does not exist, copy `templates/spec-template.md` into place (otherwise load the existing content)
+   - Do **not** create or modify git branches. This workflow only manages documentation artifacts.
 
 3. Load `templates/spec-template.md` to understand required sections.
 
@@ -97,7 +63,7 @@ Given that feature description, do this:
     7. Identify Key Entities (if data involved)
     8. Return: SUCCESS (spec ready for planning)
 
-5. Write the specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the feature description (arguments) while preserving section order and headings.
+5. Write the specification to `SPEC_FILE` using the template structure, replacing placeholders with concrete details derived from the feature description (arguments) while preserving section order and headings.
 
 6. **Specification Quality Validation**: After writing the initial spec, validate it against quality criteria:
 
@@ -105,20 +71,20 @@ Given that feature description, do this:
 
       ```markdown
       # Specification Quality Checklist: [FEATURE NAME]
-      
+
       **Purpose**: Validate specification completeness and quality before proceeding to planning
       **Created**: [DATE]
       **Feature**: [Link to spec.md]
-      
+
       ## Content Quality
-      
+
       - [ ] No implementation details (languages, frameworks, APIs)
       - [ ] Focused on user value and business needs
       - [ ] Written for non-technical stakeholders
       - [ ] All mandatory sections completed
-      
+
       ## Requirement Completeness
-      
+
       - [ ] No [NEEDS CLARIFICATION] markers remain
       - [ ] Requirements are testable and unambiguous
       - [ ] Success criteria are measurable
@@ -127,16 +93,16 @@ Given that feature description, do this:
       - [ ] Edge cases are identified
       - [ ] Scope is clearly bounded
       - [ ] Dependencies and assumptions identified
-      
+
       ## Feature Readiness
-      
+
       - [ ] All functional requirements have clear acceptance criteria
       - [ ] User scenarios cover primary flows
       - [ ] Feature meets measurable outcomes defined in Success Criteria
       - [ ] No implementation details leak into specification
-      
+
       ## Notes
-      
+
       - Items marked incomplete require spec updates before `/reviewkit.clarify` or `/reviewkit.plan`
       ```
 
@@ -161,20 +127,20 @@ Given that feature description, do this:
 
            ```markdown
            ## Question [N]: [Topic]
-           
+
            **Context**: [Quote relevant spec section]
-           
+
            **What we need to know**: [Specific question from NEEDS CLARIFICATION marker]
-           
+
            **Suggested Answers**:
-           
+
            | Option | Answer | Implications |
            |--------|--------|--------------|
            | A      | [First suggested answer] | [What this means for the feature] |
            | B      | [Second suggested answer] | [What this means for the feature] |
            | C      | [Third suggested answer] | [What this means for the feature] |
            | Custom | Provide your own answer | [Explain how to provide custom input] |
-           
+
            **Your choice**: _[Wait for user response]_
            ```
 
@@ -191,9 +157,7 @@ Given that feature description, do this:
 
    d. **Update Checklist**: After each validation iteration, update the checklist file with current pass/fail status
 
-7. Report completion with branch name, spec file path, checklist results, and readiness for the next phase (`/reviewkit.clarify` or `/reviewkit.plan`).
-
-**NOTE:** The script initializes the spec file and updates the branch comparison registry, but it does **not** create or checkout a git branch automatically.
+7. Report completion with the feature slug, spec file path, checklist results, and readiness for the next phase (`/reviewkit.clarify` or `/reviewkit.plan`).
 
 ## General Guidelines
 
@@ -238,22 +202,3 @@ When creating this spec from a user prompt:
 ### Success Criteria Guidelines
 
 Success criteria must be:
-
-1. **Measurable**: Include specific metrics (time, percentage, count, rate)
-2. **Technology-agnostic**: No mention of frameworks, languages, databases, or tools
-3. **User-focused**: Describe outcomes from user/business perspective, not system internals
-4. **Verifiable**: Can be tested/validated without knowing implementation details
-
-**Good examples**:
-
-- "Users can complete checkout in under 3 minutes"
-- "System supports 10,000 concurrent users"
-- "95% of searches return results in under 1 second"
-- "Task completion rate improves by 40%"
-
-**Bad examples** (implementation-focused):
-
-- "API response time is under 200ms" (too technical, use "Users see results instantly")
-- "Database can handle 1000 TPS" (implementation detail, use user-facing metric)
-- "React components render efficiently" (framework-specific)
-- "Redis cache hit rate above 80%" (technology-specific)
