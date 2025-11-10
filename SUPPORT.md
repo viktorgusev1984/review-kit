@@ -6,7 +6,7 @@ This project uses GitHub issues to track bugs and feature requests. Please searc
 
 For help or questions about using this project, please:
 
-- Open a [GitHub issue](https://github.com/github/review-kit/issues/new) for bug reports, feature requests, or questions about the Review-Driven Development methodology
+- Open a [GitHub issue](https://github.com/viktorgusev1984/review-kit/issues/new) for bug reports, feature requests, or questions about the Review-Driven Development methodology
 - Check the [comprehensive guide](./review-driven.md) for detailed documentation on the Review-Driven Development process
 - Review the [README](./README.md) for getting started instructions and troubleshooting tips
 
