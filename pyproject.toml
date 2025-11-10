@@ -1,6 +1,6 @@
 [project]
 name = "review-cli"
-version = "0.0.24"
+version = "0.0.1"
 description = "Review CLI, part of GitHub Review Kit. A tool to bootstrap your projects for Review-Driven Development (RDD)."
 requires-python = ">=3.11"
 dependencies = [
