@@ -384,7 +384,6 @@ review init <project_name> --ai claude --ignore-agent-tools
 
 Go to the project folder and run your AI agent. In our example, we're using `claude`.
 
-
 You will know that things are configured correctly if you see the `/reviewkit.constitution`, `/reviewkit.review`, `/reviewkit.plan`, `/reviewkit.tasks`, and `/reviewkit.implement` commands available.
 
 The first step should be establishing your project's governing principles using the `/reviewkit.constitution` command. This helps ensure consistent decision-making throughout all subsequent development phases:
@@ -637,6 +636,7 @@ For support, please open a [GitHub issue](https://github.com/viktorgusev1984/rev
 - empty
 
 ## 📄 License
+
 his project is licensed under the terms of the MIT open source license. Please refer to the [LICENSE](./LICENSE) file for the full terms.
 
 ## Original base code and ideas
