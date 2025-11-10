@@ -59,6 +59,7 @@ Then use the tool directly:
 ```bash
 specify init <PROJECT_NAME>
 specify check
+specify agents
 ```
 
 To upgrade specify run:
@@ -161,6 +162,7 @@ The `specify` command supports the following options:
 |-------------|----------------------------------------------------------------|
 | `init`      | Initialize a new Specify project from the latest template      |
 | `check`     | Check for installed tools (`git`, `claude`, `gemini`, `code`/`code-insiders`, `cursor-agent`, `windsurf`, `qwen`, `opencode`, `codex`) |
+| `agents`    | List all supported AI assistants with folder locations, CLI requirements, and install links |
 
 ### `specify init` Arguments & Options
 
@@ -219,7 +221,22 @@ specify init my-project --ai claude --github-token ghp_your_token_here
 
 # Check system requirements
 specify check
+
+# Explore available AI assistants
+specify agents
+specify agents --cli-only
+specify agents --json
 ```
+
+### `specify agents` Options
+
+| Option        | Type | Description |
+|---------------|------|-------------|
+| `--cli-only`  | Flag | Filter the list to assistants that require a locally installed CLI tool. |
+| `--json`      | Flag | Emit machine-readable JSON with the assistant metadata shown in the table. |
+
+Use the command without flags for a human-friendly Rich table, or combine flags to integrate the metadata into automation pipe
+lines.
 
 ### Available Slash Commands
 
