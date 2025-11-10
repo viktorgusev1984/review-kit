@@ -15,7 +15,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-The text the user typed after `/reviewkit.specify` in the triggering message **is** the feature description. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
+The text the user typed after `/reviewkit.review` in the triggering message **is** the feature description. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 Given that feature description, do this:
 
@@ -66,7 +66,7 @@ Given that feature description, do this:
    - You must only ever run this script once per feature
    - The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for
    - The JSON output will contain `BRANCH_NAME`, `SPEC_FILE`, `FEATURE_NUM`, and a `COMPARE_BRANCHES` array listing the branches that should be diffed against this feature (default: `main`).
-   - The script also records branch comparison metadata in `.specify/branch-comparisons.json`. Set `SPECIFY_COMPARE_BRANCHES="main develop"` (space- or comma-separated) before running the command to customize the targets.
+   - The script also records branch comparison metadata in `.review/branch-comparisons.json`. Set `REVIEW_COMPARE_BRANCHES="main develop"` (space- or comma-separated) before running the command to customize the targets.
    - For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot")
 
 3. Load `templates/spec-template.md` to understand required sections.

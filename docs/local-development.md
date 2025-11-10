@@ -1,6 +1,6 @@
 # Local Development Guide
 
-This guide shows how to iterate on the `specify` CLI locally without publishing a release or committing to `main` first.
+This guide shows how to iterate on the `review` CLI locally without publishing a release or committing to `main` first.
 
 > Scripts now have both Bash (`.sh`) and PowerShell (`.ps1`) variants. The CLI auto-selects based on OS unless you pass `--script sh|ps`.
 
@@ -41,8 +41,8 @@ source .venv/bin/activate  # or on Windows PowerShell: .venv\Scripts\Activate.ps
 # Install project in editable mode
 uv pip install -e .
 
-# Now 'specify' entrypoint is available
-specify --help
+# Now 'review' entrypoint is available
+review --help
 ```
 
 Re-running after code edits requires no reinstall because of editable mode.
@@ -52,7 +52,7 @@ Re-running after code edits requires no reinstall because of editable mode.
 `uvx` can run from a local path (or a Git ref) to simulate user flows:
 
 ```bash
-uvx --from . specify init demo-uvx --ai copilot --ignore-agent-tools --script sh
+uvx --from . review init demo-uvx --ai copilot --ignore-agent-tools --script sh
 ```
 
 You can also point uvx at a specific branch without merging:
@@ -60,7 +60,7 @@ You can also point uvx at a specific branch without merging:
 ```bash
 # Push your working branch first
 git push origin your-feature-branch
-uvx --from git+https://github.com/viktorgusev1984/review-kit.git@your-feature-branch specify init demo-branch-test --script ps
+uvx --from git+https://github.com/viktorgusev1984/review-kit.git@your-feature-branch review init demo-branch-test --script ps
 ```
 
 ### 4a. Absolute Path uvx (Run From Anywhere)
@@ -68,23 +68,23 @@ uvx --from git+https://github.com/viktorgusev1984/review-kit.git@your-feature-br
 If you're in another directory, use an absolute path instead of `.`:
 
 ```bash
-uvx --from /mnt/c/GitHub/review-kit specify --help
-uvx --from /mnt/c/GitHub/review-kit specify init demo-anywhere --ai copilot --ignore-agent-tools --script sh
+uvx --from /mnt/c/GitHub/review-kit review --help
+uvx --from /mnt/c/GitHub/review-kit review init demo-anywhere --ai copilot --ignore-agent-tools --script sh
 ```
 
 Set an environment variable for convenience:
 
 ```bash
 export REVIEW_KIT_SRC=/mnt/c/GitHub/review-kit
-uvx --from "$REVIEW_KIT_SRC" specify init demo-env --ai copilot --ignore-agent-tools --script ps
+uvx --from "$REVIEW_KIT_SRC" review init demo-env --ai copilot --ignore-agent-tools --script ps
 ```
 
 (Optional) Define a shell function:
 
 ```bash
-specify-dev() { uvx --from /mnt/c/GitHub/review-kit specify "$@"; }
+review-dev() { uvx --from /mnt/c/GitHub/review-kit review "$@"; }
 # Then
-specify-dev --help
+review-dev --help
 ```
 
 ## 5. Testing Script Permission Logic
@@ -133,8 +133,8 @@ Or copy only the modified CLI portion if you want a lighter sandbox.
 If you need to bypass TLS validation while experimenting:
 
 ```bash
-specify check --skip-tls
-specify init demo --skip-tls --ai gemini --ignore-agent-tools --script ps
+review check --skip-tls
+review init demo --skip-tls --ai gemini --ignore-agent-tools --script ps
 ```
 
 (Use only for local experimentation.)
@@ -144,10 +144,10 @@ specify init demo --skip-tls --ai gemini --ignore-agent-tools --script ps
 | Action | Command |
 |--------|---------|
 | Run CLI directly | `python -m src.specify_cli --help` |
-| Editable install | `uv pip install -e .` then `specify ...` |
-| Local uvx run (repo root) | `uvx --from . specify ...` |
-| Local uvx run (abs path) | `uvx --from /mnt/c/GitHub/review-kit specify ...` |
-| Git branch uvx | `uvx --from git+URL@branch specify ...` |
+| Editable install | `uv pip install -e .` then `review ...` |
+| Local uvx run (repo root) | `uvx --from . review ...` |
+| Local uvx run (abs path) | `uvx --from /mnt/c/GitHub/review-kit review ...` |
+| Git branch uvx | `uvx --from git+URL@branch review ...` |
 | Build wheel | `uv build` |
 
 ## 11. Cleaning Up

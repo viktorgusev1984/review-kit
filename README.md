@@ -23,7 +23,7 @@
 - [⚡ Get Started](#-get-started)
 - [📽️ Video Overview](#️-video-overview)
 - [🤖 Supported AI Agents](#-supported-ai-agents)
-- [🔧 Specify CLI Reference](#-specify-cli-reference)
+- [🔧 Review CLI Reference](#-review-cli-reference)
 - [📚 Core Philosophy](#-core-philosophy)
 - [🌟 Development Phases](#-development-phases)
 - [🎯 Experimental Goals](#-experimental-goals)
@@ -42,7 +42,7 @@ Review-Driven Development **flips the script** on traditional software developme
 
 ## ⚡ Get Started
 
-### 1. Install Specify CLI
+### 1. Install Review CLI
 
 Choose your preferred installation method:
 
@@ -51,21 +51,21 @@ Choose your preferred installation method:
 Install once and use everywhere:
 
 ```bash
-uv tool install specify-cli --from git+https://github.com/viktorgusev1984/review-kit.git
+uv tool install review-cli --from git+https://github.com/viktorgusev1984/review-kit.git
 ```
 
 Then use the tool directly:
 
 ```bash
-specify init <PROJECT_NAME>
-specify check
-specify agents
+review init <PROJECT_NAME>
+review check
+review agents
 ```
 
-To upgrade specify run:
+To upgrade Review CLI, run:
 
 ```bash
-uv tool install specify-cli --force --from git+https://github.com/viktorgusev1984/review-kit.git
+uv tool install review-cli --force --from git+https://github.com/viktorgusev1984/review-kit.git
 ```
 
 #### Option 2: One-time Usage
@@ -73,7 +73,7 @@ uv tool install specify-cli --force --from git+https://github.com/viktorgusev198
 Run directly without installing:
 
 ```bash
-uvx --from git+https://github.com/viktorgusev1984/review-kit.git specify init <PROJECT_NAME>
+uvx --from git+https://github.com/viktorgusev1984/review-kit.git review init <PROJECT_NAME>
 ```
 
 **Benefits of persistent installation:**
@@ -95,10 +95,10 @@ Use the **`/reviewkit.constitution`** command to create your project's governing
 
 ### 3. Create the spec
 
-Use the **`/reviewkit.specify`** command to describe what you want to build. Focus on the **what** and **why**, not the tech stack.
+Use the **`/reviewkit.review`** command to describe what you want to build. Focus on the **what** and **why**, not the tech stack.
 
 ```bash
-/reviewkit.specify Build an application that can help me organize my photos in separate photo albums. Albums are grouped by date and can be re-organized by dragging and dropping on the main page. Albums are never in other nested albums. Within each album, photos are previewed in a tile-like interface.
+/reviewkit.review Build an application that can help me organize my photos in separate photo albums. Albums are grouped by date and can be re-organized by dragging and dropping on the main page. Albums are never in other nested albums. Within each album, photos are previewed in a tile-like interface.
 ```
 
 ### 4. Create a technical implementation plan
@@ -152,19 +152,19 @@ Want to see Review Kit in action? Watch our [video overview](https://www.youtube
 | [Amazon Q Developer CLI](https://aws.amazon.com/developer/learning/q-developer-cli/) | ⚠️ | Amazon Q Developer CLI [does not support](https://github.com/aws/amazon-q-developer-cli/issues/3064) custom arguments for slash commands. |
 | [Amp](https://ampcode.com/) | ✅ | |
 
-## 🔧 Specify CLI Reference
+## 🔧 Review CLI Reference
 
-The `specify` command supports the following options:
+The `review` command supports the following options:
 
 ### Commands
 
 | Command     | Description                                                    |
 |-------------|----------------------------------------------------------------|
-| `init`      | Initialize a new Specify project from the latest template      |
+| `init`      | Initialize a new Review project from the latest template      |
 | `check`     | Check for installed tools (`git`, `claude`, `gemini`, `code`/`code-insiders`, `cursor-agent`, `windsurf`, `qwen`, `opencode`, `codex`) |
 | `agents`    | List all supported AI assistants with folder locations, CLI requirements, and install links |
 
-### `specify init` Arguments & Options
+### `review init` Arguments & Options
 
 | Argument/Option        | Type     | Description                                                                  |
 |------------------------|----------|------------------------------------------------------------------------------|
@@ -183,52 +183,52 @@ The `specify` command supports the following options:
 
 ```bash
 # Basic project initialization
-specify init my-project
+review init my-project
 
 # Initialize with specific AI assistant
-specify init my-project --ai claude
+review init my-project --ai claude
 
 # Initialize with Cursor support
-specify init my-project --ai cursor-agent
+review init my-project --ai cursor-agent
 
 # Initialize with Windsurf support
-specify init my-project --ai windsurf
+review init my-project --ai windsurf
 
 # Initialize with Amp support
-specify init my-project --ai amp
+review init my-project --ai amp
 
 # Initialize with PowerShell scripts (Windows/cross-platform)
-specify init my-project --ai copilot --script ps
+review init my-project --ai copilot --script ps
 
 # Initialize in current directory
-specify init . --ai copilot
+review init . --ai copilot
 # or use the --here flag
-specify init --here --ai copilot
+review init --here --ai copilot
 
 # Force merge into current (non-empty) directory without confirmation
-specify init . --force --ai copilot
+review init . --force --ai copilot
 # or 
-specify init --here --force --ai copilot
+review init --here --force --ai copilot
 
 # Skip git initialization
-specify init my-project --ai gemini --no-git
+review init my-project --ai gemini --no-git
 
 # Enable debug output for troubleshooting
-specify init my-project --ai claude --debug
+review init my-project --ai claude --debug
 
 # Use GitHub token for API requests (helpful for corporate environments)
-specify init my-project --ai claude --github-token ghp_your_token_here
+review init my-project --ai claude --github-token ghp_your_token_here
 
 # Check system requirements
-specify check
+review check
 
 # Explore available AI assistants
-specify agents
-specify agents --cli-only
-specify agents --json
+review agents
+review agents --cli-only
+review agents --json
 ```
 
-### `specify agents` Options
+### `review agents` Options
 
 | Option        | Type | Description |
 |---------------|------|-------------|
@@ -240,7 +240,7 @@ lines.
 
 ### Available Slash Commands
 
-After running `specify init`, your AI coding agent will have access to these slash commands for structured development:
+After running `review init`, your AI coding agent will have access to these slash commands for structured development:
 
 #### Core Commands
 
@@ -249,7 +249,7 @@ Essential commands for the Review-Driven Development workflow:
 | Command                  | Description                                                           |
 |--------------------------|-----------------------------------------------------------------------|
 | `/reviewkit.constitution`  | Create or update project governing principles and development guidelines |
-| `/reviewkit.specify`       | Define what you want to build (requirements and user stories)        |
+| `/reviewkit.review`       | Define what you want to build (requirements and user stories)        |
 | `/reviewkit.plan`          | Create technical implementation plans with your chosen tech stack     |
 | `/reviewkit.tasks`         | Generate actionable task lists for implementation                     |
 | `/reviewkit.implement`     | Execute all tasks to build the feature according to the plan         |
@@ -268,8 +268,8 @@ Additional commands for enhanced quality and validation:
 
 | Variable         | Description                                                                                    |
 |------------------|------------------------------------------------------------------------------------------------|
-| `SPECIFY_FEATURE` | Override feature detection for non-Git repositories. Set to the feature directory name (e.g., `001-photo-albums`) to work on a specific feature when not using Git branches.<br/>**Must be set in the context of the agent you're working with prior to using `/reviewkit.plan` or follow-up commands. |
-| `SPECIFY_COMPARE_BRANCHES` | Optional space- or comma-separated list of branches that new features should be compared against (e.g., `main develop`). Defaults to `main` when unset. Recorded in `.specify/branch-comparisons.json` each time `/reviewkit.specify` runs. |
+| `REVIEW_FEATURE` | Override feature detection for non-Git repositories. Set to the feature directory name (e.g., `001-photo-albums`) to work on a specific feature when not using Git branches.<br/>**Must be set in the context of the agent you're working with prior to using `/reviewkit.plan` or follow-up commands. |
+| `REVIEW_COMPARE_BRANCHES` | Optional space- or comma-separated list of branches that new features should be compared against (e.g., `main develop`). Defaults to `main` when unset. Recorded in `.review/branch-comparisons.json` each time `/reviewkit.review` runs. |
 
 ## 📚 Core Philosophy
 
@@ -336,52 +336,52 @@ If you encounter issues with an agent, please open an issue so we can refine the
 <details>
 <summary>Click to expand the detailed step-by-step walkthrough</summary>
 
-You can use the Specify CLI to bootstrap your project, which will bring in the required artifacts in your environment. Run:
+You can use the Review CLI to bootstrap your project, which will bring in the required artifacts in your environment. Run:
 
 ```bash
-specify init <project_name>
+review init <project_name>
 ```
 
 Or initialize in the current directory:
 
 ```bash
-specify init .
+review init .
 # or use the --here flag
-specify init --here
+review init --here
 # Skip confirmation when the directory already has files
-specify init . --force
+review init . --force
 # or
-specify init --here --force
+review init --here --force
 ```
 
-![Specify CLI bootstrapping a new project in the terminal](./media/specify_cli.gif)
+![Review CLI bootstrapping a new project in the terminal](./media/specify_cli.gif)
 
-You will be prompted to select the AI agent you are using. You can also proactively specify it directly in the terminal:
+You will be prompted to select the AI agent you are using. You can also proactively review it directly in the terminal:
 
 ```bash
-specify init <project_name> --ai claude
-specify init <project_name> --ai gemini
-specify init <project_name> --ai copilot
+review init <project_name> --ai claude
+review init <project_name> --ai gemini
+review init <project_name> --ai copilot
 
 # Or in current directory:
-specify init . --ai claude
-specify init . --ai codex
+review init . --ai claude
+review init . --ai codex
 
 # or use --here flag
-specify init --here --ai claude
-specify init --here --ai codex
+review init --here --ai claude
+review init --here --ai codex
 
 # Force merge into a non-empty current directory
-specify init . --force --ai claude
+review init . --force --ai claude
 
 # or
-specify init --here --force --ai claude
+review init --here --force --ai claude
 ```
 
 The CLI will check if you have Claude Code, Gemini CLI, Cursor CLI, Qwen CLI, opencode, Codex CLI, or Amazon Q Developer CLI installed. If you do not, or you prefer to get the templates without checking for the right tools, use `--ignore-agent-tools` with your command:
 
 ```bash
-specify init <project_name> --ai claude --ignore-agent-tools
+review init <project_name> --ai claude --ignore-agent-tools
 ```
 
 ### **STEP 1:** Establish project principles
@@ -390,7 +390,7 @@ Go to the project folder and run your AI agent. In our example, we're using `cla
 
 ![Bootstrapping Claude Code environment](./media/bootstrap-claude-code.gif)
 
-You will know that things are configured correctly if you see the `/reviewkit.constitution`, `/reviewkit.specify`, `/reviewkit.plan`, `/reviewkit.tasks`, and `/reviewkit.implement` commands available.
+You will know that things are configured correctly if you see the `/reviewkit.constitution`, `/reviewkit.review`, `/reviewkit.plan`, `/reviewkit.tasks`, and `/reviewkit.implement` commands available.
 
 The first step should be establishing your project's governing principles using the `/reviewkit.constitution` command. This helps ensure consistent decision-making throughout all subsequent development phases:
 
@@ -398,11 +398,11 @@ The first step should be establishing your project's governing principles using 
 /reviewkit.constitution Create principles focused on code quality, testing standards, user experience consistency, and performance requirements. Include governance for how these principles should guide technical decisions and implementation choices.
 ```
 
-This step creates or updates the `.specify/memory/constitution.md` file with your project's foundational guidelines that the AI agent will reference during specification, planning, and implementation phases.
+This step creates or updates the `.review/memory/constitution.md` file with your project's foundational guidelines that the AI agent will reference during specification, planning, and implementation phases.
 
 ### **STEP 2:** Create project specifications
 
-With your project principles established, you can now create the functional specifications. Use the `/reviewkit.specify` command and then provide the concrete requirements for the project you want to develop.
+With your project principles established, you can now create the functional specifications. Use the `/reviewkit.review` command and then provide the concrete requirements for the project you want to develop.
 
 >[!IMPORTANT]
 >Be as explicit as possible about *what* you are trying to build and *why*. **Do not focus on the tech stack at this point**.
@@ -430,14 +430,14 @@ delete any comments that you made, but you can't delete comments anybody else ma
 
 After this prompt is entered, you should see Claude Code kick off the planning and spec drafting process. Claude Code will also trigger some of the built-in scripts to set up the repository.
 
-Once this step is completed, you'll receive the proposed branch name (e.g., `001-create-taskify`) and a new specification in the `specs/001-create-taskify` directory. Create and checkout the branch manually when you're ready—automatic branch creation is disabled. The branch name and its comparison targets are recorded in `.specify/branch-comparisons.json`.
+Once this step is completed, you'll receive the proposed branch name (e.g., `001-create-taskify`) and a new specification in the `specs/001-create-taskify` directory. Create and checkout the branch manually when you're ready—automatic branch creation is disabled. The branch name and its comparison targets are recorded in `.review/branch-comparisons.json`.
 
 The produced specification should contain a set of user stories and functional requirements, as defined in the template.
 
 At this stage, your project folder contents should resemble the following:
 
 ```text
-└── .specify
+└── .review
     ├── memory
     │  └── constitution.md
     ├── scripts

@@ -2,10 +2,16 @@
 
 <!-- markdownlint-disable MD024 -->
 
-All notable changes to the Specify CLI and templates are documented here.
+All notable changes to the Review CLI and templates are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.0.24] - 2025-10-30
+
+### Changed
+
+- Rebranded the CLI entry point and documentation references from `specify` to `review`, aligning command usage with the Review Kit naming.
 
 ## [0.0.23] - 2025-10-30
 
@@ -17,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Introduced the `specify agents` command to list supported AI assistants, filter for CLI-based tooling, and emit JSON metadata.
+- Introduced the `review agents` command to list supported AI assistants, filter for CLI-based tooling, and emit JSON metadata.
 - Documented the new command and usage examples in the README to simplify discovery.
 
 ## [0.0.21] - 2025-10-21
@@ -56,7 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Support for CodeBuddy (thank you to [@lispking](https://github.com/lispking) for the contribution).
-- You can now see Git-sourced errors in the Specify CLI.
+- You can now see Git-sourced errors in the Review CLI.
 
 ### Changed
 
@@ -68,7 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Support for using `.` as a shorthand for current directory in `specify init .` command, equivalent to `--here` flag but more intuitive for users.
+- Support for using `.` as a shorthand for current directory in `review init .` command, equivalent to `--here` flag but more intuitive for users.
 - Use the `/reviewkit.` command prefix to easily discover Review Kit-related commands.
 - Refactor the prompts and templates to simplify their capabilities and how they are tracked. No more polluting things with tests when they are not needed.
 - Ensure that tasks are created per user story (simplifies testing and validation).
@@ -76,7 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- All command files now prefixed with `reviewkit.` (e.g., `reviewkit.specify.md`, `reviewkit.plan.md`) for better discoverability and differentiation in IDE/CLI command palettes and file explorers
+- All command files now prefixed with `reviewkit.` (e.g., `reviewkit.review.md`, `reviewkit.plan.md`) for better discoverability and differentiation in IDE/CLI command palettes and file explorers
 
 ## [0.0.17] - 2025-09-22
 

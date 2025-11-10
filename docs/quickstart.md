@@ -2,31 +2,31 @@
 
 This guide will help you get started with Review-Driven Development using Review Kit.
 
-> NEW: All automation scripts now provide both Bash (`.sh`) and PowerShell (`.ps1`) variants. The `specify` CLI auto-selects based on OS unless you pass `--script sh|ps`.
+> NEW: All automation scripts now provide both Bash (`.sh`) and PowerShell (`.ps1`) variants. The `review` CLI auto-selects based on OS unless you pass `--script sh|ps`.
 
 ## The 4-Step Process
 
-### 1. Install Specify
+### 1. Install Review CLI
 
 Initialize your project depending on the coding agent you're using:
 
 ```bash
-uvx --from git+https://github.com/viktorgusev1984/review-kit.git specify init <PROJECT_NAME>
+uvx --from git+https://github.com/viktorgusev1984/review-kit.git review init <PROJECT_NAME>
 ```
 
 Pick script type explicitly (optional):
 
 ```bash
-uvx --from git+https://github.com/viktorgusev1984/review-kit.git specify init <PROJECT_NAME> --script ps  # Force PowerShell
-uvx --from git+https://github.com/viktorgusev1984/review-kit.git specify init <PROJECT_NAME> --script sh  # Force POSIX shell
+uvx --from git+https://github.com/viktorgusev1984/review-kit.git review init <PROJECT_NAME> --script ps  # Force PowerShell
+uvx --from git+https://github.com/viktorgusev1984/review-kit.git review init <PROJECT_NAME> --script sh  # Force POSIX shell
 ```
 
 ### 2. Create the Spec
 
-Use the `/reviewkit.specify` command to describe what you want to build. Focus on the **what** and **why**, not the tech stack.
+Use the `/reviewkit.review` command to describe what you want to build. Focus on the **what** and **why**, not the tech stack.
 
 ```bash
-/reviewkit.specify Build an application that can help me organize my photos in separate photo albums. Albums are grouped by date and can be re-organized by dragging and dropping on the main page. Albums are never in other nested albums. Within each album, photos are previewed in a tile-like interface.
+/reviewkit.review Build an application that can help me organize my photos in separate photo albums. Albums are grouped by date and can be re-organized by dragging and dropping on the main page. Albums are never in other nested albums. Within each album, photos are previewed in a tile-like interface.
 ```
 
 ### 3. Create a Technical Implementation Plan
@@ -45,7 +45,7 @@ Use `/reviewkit.tasks` to create an actionable task list, then ask your agent to
 
 Here's a complete example of building a team productivity platform:
 
-### Step 1: Define Requirements with `/reviewkit.specify`
+### Step 1: Define Requirements with `/reviewkit.review`
 
 ```text
 Develop Taskify, a team productivity platform. It should allow users to create projects, add team members,
