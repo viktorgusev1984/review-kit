@@ -1161,6 +1161,94 @@ def init(
     console.print(enhancements_panel)
 
 @app.command()
+def agents(
+    cli_only: bool = typer.Option(
+        False,
+        "--cli-only",
+        help="Show only assistants that require a CLI installation.",
+    ),
+    json_output: bool = typer.Option(
+        False,
+        "--json",
+        help="Output agent metadata as JSON instead of a table.",
+    ),
+):
+    """List supported AI assistants with metadata."""
+    show_banner()
+
+    entries = []
+    for agent_key, agent_config in sorted(AGENT_CONFIG.items()):
+        if cli_only and not agent_config["requires_cli"]:
+            continue
+        entries.append(
+            {
+                "key": agent_key,
+                "name": agent_config["name"],
+                "folder": agent_config["folder"],
+                "requires_cli": agent_config["requires_cli"],
+                "install_url": agent_config["install_url"],
+            }
+        )
+
+    if not entries:
+        console.print(
+            "[yellow]No agents matched the selected filters.[/yellow]"
+        )
+        return
+
+    if json_output:
+        typer.echo(json.dumps(entries, indent=2, ensure_ascii=False))
+        return
+
+    total_agents = len(AGENT_CONFIG)
+    total_cli_agents = sum(1 for cfg in AGENT_CONFIG.values() if cfg["requires_cli"])
+
+    table = Table(
+        title="Supported AI assistants",
+        show_lines=False,
+        pad_edge=False,
+    )
+    table.add_column("Key", style="cyan", no_wrap=True)
+    table.add_column("Name", style="white")
+    table.add_column("Folder", style="magenta", no_wrap=True)
+    table.add_column("CLI", style="yellow", justify="center")
+    table.add_column("Install URL", style="bright_black", overflow="fold")
+
+    for entry in entries:
+        requires_cli = (
+            "[green]Yes[/green]" if entry["requires_cli"] else "[cyan]No[/cyan]"
+        )
+        install_url = entry["install_url"] or "[dim]N/A[/dim]"
+        table.add_row(
+            entry["key"],
+            entry["name"],
+            entry["folder"],
+            requires_cli,
+            install_url,
+        )
+
+    console.print(table)
+
+    shown_cli_agents = sum(1 for entry in entries if entry["requires_cli"])
+    shown_ide_agents = len(entries) - shown_cli_agents
+
+    summary_lines = [
+        f"Showing [bold]{len(entries)}[/bold] of {total_agents} agents",
+        f"CLI required: [bold]{shown_cli_agents}[/bold] (total {total_cli_agents})",
+        f"IDE-focused: [bold]{shown_ide_agents}[/bold] (total {total_agents - total_cli_agents})",
+    ]
+
+    console.print(
+        Panel(
+            "\n".join(summary_lines),
+            title="Summary",
+            border_style="cyan",
+            padding=(1, 2),
+        )
+    )
+
+
+@app.command()
 def check():
     """Check that all required tools are installed."""
     show_banner()
